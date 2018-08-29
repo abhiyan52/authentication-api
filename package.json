@@ -18,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/abhiyan52/authentication-api/issues"
   },
-  "homepage": "https://github.com/abhiyan52/authentication-api#readme"
+  "homepage": "https://github.com/abhiyan52/authentication-api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cryptr": "^4.0.0",
+    "express": "^4.16.3",
+    "mysql": "^2.16.0",
+    "sqlite3": "^4.0.2"
+  }
 }
