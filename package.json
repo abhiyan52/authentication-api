@@ -1,0 +1,22 @@
+{
+  "name": "authentication-api",
+  "version": "1.0.0",
+  "description": "Use Node JS to insert,delete,update password information",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhiyan52/authentication-api.git"
+  },
+  "keywords": [
+    "authentication-api"
+  ],
+  "author": "abhiyantimilsina",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abhiyan52/authentication-api/issues"
+  },
+  "homepage": "https://github.com/abhiyan52/authentication-api#readme"
+}
