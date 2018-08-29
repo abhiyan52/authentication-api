@@ -68,6 +68,13 @@ const cryptr = new Cryptr('myTotalySecretKey');
         if(err)
         {
            console.log(err.message);
+           if(err.message == "SQLITE_CONSTRAINT: UNIQUE constraint failed: user.email")
+              res.send(`USER ALDREADY EXISTS
+              <br/><a href="/">CLICK HERE TO RETURN TO MAIN PAGE </a>
+              
+              `);
+
+
            db.close();
            return false;
         }

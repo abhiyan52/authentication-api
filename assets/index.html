@@ -1,20 +1,62 @@
 <html>
- <head>CLIENT PAGE</head>
- <body>
-    <h1>LOGIN</h1>
+ <head>
+
+
+<title>CLIENT PAGE</title>
+
+<style>
+  .notice
+ {
+   background-color : black;
+   font-size :15px;
+   color:white;
+ }
+
+</style>
+</head>
+ 
+<body>
+   
+  
+  <div class="notice">
+   
+   <b>THIS PAGE PERFORMS BASIC CRUD OPERATIONS AS ASKED IN QUESTION.</br>
+   <br/>
+ <i>
+    > TO CREATE MOVE TO CREATE SECTION AND GIVE DETAILS <br/><br/>
+    > TO LOGIN TYPE EMAIL AND PASSWORD AND LOGIN <br/><br/>
+    > TO RETRIVE PASSWORD WRITE EMAIL ONLY AND PRESS FORGET <br/><br/>
+    > TO RESET CLICK ON RESET LINK WHERE THE FORM IS PROVIDED <br/>  <br/>
+</i>
+<br/>
+   *** USE email:dtrump@gmail.com and passowrd:dtrump for checking *****
+<br/>
+    ====TECHNOLOGIES USED: HTML,NODEJS,EXPRESSJS,SQLITE3,CRYPTR,BODYPARSER===
+    <br/>
+    ==== TEXT EDITOR : VSCODE =====
+ </div>
+
+
+
+    <h2>LOGIN</h2>
     <form method="post" action="/login">
-        <label for="EMAIL">EMAIL <input type="text" name="email"/></label>
-        <label for="PASSWORD">PASSWORD<input type="password" name ="password"/> 
+        <label for="EMAIL">EMAIL: <input type="text" name="email"/></label><br/>
+        <label for="PASSWORD">PASSWORD: <input type="password" name ="password"/><br/>
         <input type="submit" name="login"  value="LOGIN"/>
         <input type="submit" name="forget" value ="FORGET"/>
     </form>
+     <br/>
     <a href="/reset">RESET PASSOWORD</a>
 
-    <h1>CREATE USER</h1>
+<br/>
+<br/>
+<br/>
+<br/>
+    <h2>CREATE USER</h2>
      <form method="post" action ="/create">
-         <label for="NAME">NAME<input type="text" name="name"/></label>
-         <label for="email">EMAIL<input type="email" name="email"/></label>
-         <label for="password">PASSWORD<input type="password" name ="password"/> </label>
+         <label for="NAME">NAME: <input type="text" name="name"/></label><br/>
+         <label for="email">EMAIL: <input type="email" name="email"/></label><br/>
+         <label for="password">PASSWORD: <input type="password" name ="password"/> </label><br/>
          <input type="submit" name="Submit" value="SUBMIT"/>
      </form>
   

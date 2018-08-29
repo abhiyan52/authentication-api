@@ -15,7 +15,12 @@ app.use(bodyParser.urlencoded({  extended: true
 
 app.use(express.static('./assets/'));
 
-app.listen(3000);
+app.listen(3000,function(err){
+    if(err)
+    console.error("ERROR");
+    else
+    console.log("CLICK HERE TO VISIT THE PAGE http://localhost:3000");
+});
 
 app.post("/create",function(req,res){
      const name = req.body.name;
