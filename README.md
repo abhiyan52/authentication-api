@@ -1,6 +1,13 @@
 # authentication-api
 Authentication with create,delete,update and reset
 HELLO WORLD,
+
+ Required Components: 
+  >NPM
+  > SQLITE3
+  >Node
+
+ 
  
  You can start using this API in your machine.Folloe these steps:
  1) DOWNLOAD The ZIP from github || git clone <project url> 
