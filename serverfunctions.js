@@ -16,110 +16,105 @@ const cryptr = new Cryptr('myTotalySecretKey');
      return db;
 }
  
-     exports.login = (email,password,res) => {
-         
-    let db =connect();
-    var result='';
-     let sql = `SELECT password p from user where email = ?`;
-     db.get(sql,[email],function(err,row){
-      
-        if(err)
-        {
-        console.log(err.message);
-        
-        }
-        else
-        {
-            if(row)
-             {
-                if(cryptr.decrypt(row.p) == password || row.p ==password)
-                {
-                   
-                    res.send(`LOGIN SUCESSFUL
-                    <br/><a href="/">CLICK HERE TO RETURN TO MAIN PAGE </a>
-                    `);
-                }
-                else
-               {
-                   res.send(`INVALID DETAILS OF PASSWORD
-                   <br/><a href="/">CLICK HERE TO RETURN TO MAIN PAGE </a>
-                   `);
-               }
-             }
-            else
-            {
-            res.send(`USER DOESNOT EXISTS
-            <br/><a href="/">CLICK HERE TO RETURN TO MAIN PAGE </a>
-            `);
-            }
-        }
-        db.close();
-        console.log(result);
-      
-     });
-  }
+    exports.login = (email,password) => {
+    
+        let db =connect();
+        return validate(email,password,db);
+       
+}
 
 
   
-  exports.insert = (name,email,password,res) => {
-       let db = connect();
-       var sql = `INSERT INTO user VALUES ("${name}","${email}","${password}")`;
-       db.run(sql,function(err){
-        if(err)
-        {
-           console.log(err.message);
-           if(err.message == "SQLITE_CONSTRAINT: UNIQUE constraint failed: user.email")
-              res.send(`USER ALDREADY EXISTS
-              <br/><a href="/">CLICK HERE TO RETURN TO MAIN PAGE </a>
-              
-              `);
-
-
-           db.close();
-           return false;
-        }
-        else
-        {
-            let response = `THE USER ${name} has been registered
-            <br/><a href="/">CLICK HERE TO RETURN TO MAIN PAGE </a>
-            `;
-            res.send(response);
-        }
-        db.close();
-        return true;
-       });
+  exports.insert = (name,email,password) => {
+    let db = connect();
+  var sql = `INSERT INTO user VALUES ("${name}","${email}","${password}")`;
+return new Promise((resolve,reject)=>{
+  db.run(sql,function(err){
+      if(err)
+      {
+       if(err.message == "SQLITE_CONSTRAINT: UNIQUE constraint failed: user.email")
+      reject("USER ALREADY EXISTS");
+       }
+      else
+      {
+        resolve(`THE USER ${name} has been registered`);
+      }
+  });
+});
 }
+
 
 exports.forget = (email,res) =>{
-console.log("IN FORGET");
     let db = connect();
     let sql = `SELECT password p from user where email = ?`;
-    db.get(sql,[email],function(err,row){
-        if(err)
-        console.log("ERROR");
-        else
-        row?res.send(`THE PASSWORD FOR ${email} is ${cryptr.decrypt(row.p)}
-        <br/><a href="/">CLICK HERE TO RETURN TO MAIN PAGE </a>
-        `): res.send(`CANNOT FIND ${email}
-        <br/><a href="/">CLICK HERE TO RETURN TO MAIN PAGE </a>
-        `)
-    });
+    return new Promise((resolve,reject)=>{
+        db.get(sql,[email],function(err,row){
+            if(err)
+            reject("SERVER ERROR " + err.message);
+            else
+            row?resolve(`THE PASSWORD FOR ${email} is ${cryptr.decrypt(row.p)}`)
+            : reject(`CANNOT FIND ${email}`)
+        });
+     db.close();
+});
 }
 
-exports.reset = (email,pass,res) => {
-    console.log("IN RESET");
+exports.reset = (email,pass,newpassword) => {
 
     let db = connect();
     let sql=`UPDATE user set password = ? where email=?`;
-    db.run(sql,[cryptr.encrypt(pass),email],function(err){
-        if(err)
-        console.log(err);
-        else
-        {
-           res.send(`${this.changes} ENTRY UPDATED
-           <br/><a href="/">CLICK HERE TO RETURN TO MAIN PAGE </a>
-           `);
-        }
 
-    })
+
+  return new Promise((resolve,reject)=>{
+   let test = validate(email,pass,db);
+
+   test.catch(()=>{
+      reject('INVALID DETAILS PROVIDED');
+   });
+
+
+    db.run(sql,[cryptr.encrypt(newpassword),email],function(err){
+        if(err)
+        {
+            reject("ERROR : "+err.message);
+        }
+        else
+        { 
+            if(this.changes === 0)
+             reject(`NO ENTRIES FOUND for ${email}`);
+
+           resolve(`${this.changes} ENTRY UPDATED IN DATABASE for ${email}`);
+        }
+    });
+db.close();
+  });
 }
+
+var validate = (email,password,db)=>{
+    let sql = `SELECT password p from user where email = ?`;
+    return new Promise((resolve,reject)=>{
+        db.get(sql,[email],function(err,row){
+           if(err)
+            {
+               reject("SERVER FAILED TO RESPONSE  " + err.stack);
+             }
+             if(row)
+                 {
+                    if(cryptr.decrypt(row.p) == password || row.p ==password)
+                    {
+                         resolve(`LOGIN SUCESSFUL`);
+                    }
+                    else
+                    {
+                         reject(`INVALID DETAILS OF PASSWORD`);
+                    }
+                 }
+                else
+                {
+                      reject("USER DOESNOT EXISTS");
+                }
+     
+}); 
+        
+});
+};
